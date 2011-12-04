@@ -17,9 +17,9 @@ class AccommodationCommand < Clamp::Command
   end
 
   def execute
-    t = BookingSearch.new(accommodation_json, travellers_json)
-    t.find_match
-    rez = t.find_accommodation(accommodation_id)
+    booking = BookingSearch.new(accommodation_json, travellers_json)
+    booking.find_match
+    rez = booking.find_accommodation(accommodation_id)
     puts "Accommodation: #{rez[:acc]} \n --- \n#{rez[:tr]} \n"
   end
 end
@@ -53,9 +53,9 @@ class SearchCommand < Clamp::Command
   parameter "REQUIREMENTS ...", "List of required attributes traveller desires"
 
   def execute
-    t = BookingSearch.new(accommodation_json, travellers_json)
+    booking = BookingSearch.new(accommodation_json, travellers_json)
     options = [{'priceRange' => {'min' => min_price, 'max' => max_price}, 'requirements' => requirements_list}]
-    rez = t.search_accommodation(options)
+    rez = booking.search_accommodation(options)
     puts rez[:acc] ? "#{rez[:acc][:name]}, #{rez[:acc][:price]}" : "Nothing was found"
   end
 end
