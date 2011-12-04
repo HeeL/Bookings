@@ -13,8 +13,8 @@ class BookingSearch < Booking
   end
 
   def search_accommodation(options)
-    set_tr(options.first.merge({'id' => '', 'name' => ''}))
-    find_match.first
+    add_tr(options.first.merge({'id' => '', 'name' => ''}))
+    find_match.last
   end
 
   private

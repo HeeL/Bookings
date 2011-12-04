@@ -71,8 +71,8 @@ class Booking
     (@tr_cur['priceRange']['min']..@tr_cur['priceRange']['max']) === @acc_cur['price']
   end
 
-  def set_tr(tr)
-    @tr = [tr]
+  def add_tr(tr)
+    @tr << tr
   end
 
 end
