@@ -1,0 +1,70 @@
+#!/usr/bin/env ruby
+
+# add gem "clamp", ">= 0.2.3" to your bundle file if you use this
+# clamp reference at https://github.com/mdub/clamp
+DIR = File.dirname(__FILE__)
+$:.unshift(DIR) unless $:.include?(DIR) || $:.include?(File.expand_path(DIR))
+require 'clamp'
+require 'lib/parser'
+require 'lib/booking'
+require 'lib/booking_search'
+
+class AccommodationCommand < Clamp::Command
+  parameter "TRAVELLERS_JSON", "travellers JSON data file"
+  parameter "ACCOMMODATION_JSON", "accommodation JSON data file"
+  parameter "ACCOMMODATION_ID", "Identifier of accommodation to display" do |s|
+    Integer(s)
+  end
+
+  def execute
+    t = BookingSearch.new(accommodation_json, travellers_json)
+    t.find_match
+    rez = t.find_accommodation(accommodation_id)
+    puts "Accommodation: #{rez[:acc]} \n --- \n#{rez[:tr]} \n"
+  end
+end
+
+
+class TravellerCommand < Clamp::Command
+  parameter "TRAVELLERS_JSON", "travellers JSON data file"
+  parameter "ACCOMMODATION_JSON", "accommodation JSON data file"
+  parameter "TRAVELLER_ID", "Identifier of traveller to display" do |s|
+    Integer(s)
+  end
+
+  def execute
+    booking = BookingSearch.new(accommodation_json, travellers_json)
+    booking.find_match
+    rez = booking.find_traveller(traveller_id)
+    puts "Traveller: #{rez[:tr_name]}\nBooked at: #{rez[:acc_name]}"
+  end
+end
+
+
+class SearchCommand < Clamp::Command
+  parameter "TRAVELLERS_JSON", "travellers JSON data file"
+  parameter "ACCOMMODATION_JSON", "accommodation JSON data file"
+  parameter "MIN_PRICE", "Minimum price traveller wants to pay" do |s|
+    Integer(s)
+  end
+  parameter "MAX_PRICE", "Maximum price traveller wants to pay" do |s|
+    Integer(s)
+  end
+  parameter "REQUIREMENTS ...", "List of required attributes traveller desires"
+
+  def execute
+    t = BookingSearch.new(accommodation_json, travellers_json)
+    options = [{'priceRange' => {'min' => min_price, 'max' => max_price}, 'requirements' => requirements_list}]
+    rez = t.search_accommodation(options)
+    puts rez[:acc] ? "#{rez[:acc][:name]}, #{rez[:acc][:price]}" : "Nothing was found"
+  end
+end
+
+
+class MainCommand < Clamp::Command
+  subcommand "accommodation", "Find accommodation details including travellers booked there", AccommodationCommand
+  subcommand "traveller", "Find traveller details showing where they are booked", TravellerCommand
+  subcommand "search", "Search for suitable accommodation for a traveller", SearchCommand
+end
+
+MainCommand.run

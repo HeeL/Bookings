@@ -1,0 +1,10 @@
+Ruby 1.9.2
+Tested on Linux and Mac OS X
+
+Install gems with bundle command:
+$ bundle install
+or
+$ bundle
+
+To run tests:
+$ rspec specs/

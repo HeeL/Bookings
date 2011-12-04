@@ -1,0 +1,5 @@
+[{"id":0,"name":"Cremin Apartments","price":253,"attributes":["24 reception","phone","close to transport","internet","bath","gym"],"capacity":{"total":37,"free":36}},
+{"id":1,"name":"Simonis Campsite","price":86,"attributes":["restaurant","room service","close to transport","internet","bath","gym","bar","parking","quiet"],"capacity":{"total":96,"free":2}},
+{"id":2,"name":"Fay Villa","price":347,"attributes":["bath","restaurant","room service","phone","air conditioning","meeting rooms"],"capacity":{"total":26,"free":21}},
+{"id":3,"name":"McKenzie Campsite","price":865,"attributes":["bath","24 reception","air conditioning","close to transport","bar","parking","gym","quiet"],"capacity":{"total":32,"free":8}},
+{"id":4,"name":"McKenzie Campsite2","price":215,"attributes":["bath"],"capacity":{"total":32,"free":8}}]
